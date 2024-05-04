@@ -16,14 +16,14 @@ router.get('/', async (req: Request, res: Response) => {
 });
 
 router.post('/add', async (req: Request, res: Response) => {
-  console.log(req.body);
   const { error } = schema.validate(req.body);
   if (error) {
-    res.status(422).send({ error: error.details });
-  } else {
-    const comment = await Comment.create(req.body);
-    res.send(comment);
+    return res.status(422).send({ error: error.details });
   }
+
+  const { name, email, text } = req.body;
+  const comment = await Comment.create({ name, email, text });
+  res.send(comment);
 });
 
 export default router;
