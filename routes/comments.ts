@@ -19,8 +19,9 @@ router.post('/add', async (req: Request, res: Response) => {
   const { error } = schema.validate(req.body);
   if (error) {
     res.send({ error: error.details });
+  } else {
+    res.send('You did it!');
   }
-  res.send('You did it!');
 });
 
 export default router;
