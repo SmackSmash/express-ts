@@ -1,12 +1,13 @@
 import express, { type Request, type Response } from 'express';
 import Joi from 'joi';
 import Comment from '../models/comment';
+
 const router = express.Router();
 
 const schema = Joi.object().keys({
   name: Joi.string().min(3).max(30).required(),
   email: Joi.string().email().required(),
-  test: Joi.string().required()
+  text: Joi.string().required()
 });
 
 router.get('/', async (req: Request, res: Response) => {
@@ -18,9 +19,10 @@ router.post('/add', async (req: Request, res: Response) => {
   console.log(req.body);
   const { error } = schema.validate(req.body);
   if (error) {
-    res.send({ error: error.details });
+    res.status(400).send({ error: error.details });
   } else {
-    res.send('You did it!');
+    const comment = await Comment.create(req.body);
+    res.send(comment);
   }
 });
 
