@@ -8,6 +8,8 @@ dotenv.config();
 
 const app: Express = express();
 
+app.use(express.json());
+
 connectDB();
 
 app.use('/', commentRouter);
